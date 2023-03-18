@@ -24,6 +24,8 @@ public:
 
     int select(int index);
 
+    void show();
+
 
 
 };

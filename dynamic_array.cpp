@@ -2,6 +2,7 @@
 // Created by kacpe on 18.03.2023.
 //
 
+#include <iostream>
 #include "dynamic_array.h"
 #include "cstdlib"
 
@@ -53,8 +54,8 @@ void dynamic_array::delete_with_index(int index) {
     for (int i = 0; i <index ; ++i) {
         temp[i] = array[i];
     }
-    for (int i = index+1; i <size ; ++i) {
-        temp[i] = array[i];
+    for (int i = index; i <size+1 ; ++i) {
+        temp[i] = array[i+1];
     }
     delete[] array;
     array = temp;
@@ -83,6 +84,14 @@ void dynamic_array::delete_front() {
 
 int dynamic_array::select(int index) {
     return array[index];
+}
+
+void dynamic_array::show() {
+    for (int i = 0; i < size; ++i) {
+        std::cout << array[i]<<" ";
+    }
+    std::cout<<std::endl;
+
 }
 
 
