@@ -93,5 +93,11 @@ void dynamic_array::show() {
 
 }
 
+void dynamic_array::swap(int index_a, int index_b) {
+    int temp = array[index_a];
+    array[index_a] = array[index_b];
+    array[index_b] = temp;
+}
+
 
 

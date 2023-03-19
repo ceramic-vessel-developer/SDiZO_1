@@ -25,6 +25,8 @@ public:
 
     int select(int index);
 
+    void swap(int index_a, int index_b);
+
     void show();
 
 
