@@ -10,8 +10,9 @@
 class dynamic_array {
 private:
     int* array = nullptr;
-    int size = 0;
+    int size;
 public:
+
     dynamic_array(int* static_array, int static_size);
 
     void add_front(int item);
