@@ -14,6 +14,7 @@ private:
 public:
 
     dynamic_array(int* static_array, int static_size);
+    dynamic_array(int size);
 
     void add_front(int item);
     void add_back(int item);
@@ -26,6 +27,7 @@ public:
     int select(int index);
 
     void swap(int index_a, int index_b);
+    int get_size();
 
     void show();
 

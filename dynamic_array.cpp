@@ -99,5 +99,18 @@ void dynamic_array::swap(int index_a, int index_b) {
     array[index_b] = temp;
 }
 
+int dynamic_array::get_size() {
+    return size;
+}
+
+dynamic_array::dynamic_array(int size) {
+    array =  new int(size);
+    srand((unsigned) time(NULL));
+    for (int i = 0; i < size; ++i) {
+        array[i] = rand();
+    }
+
+}
+
 
 
