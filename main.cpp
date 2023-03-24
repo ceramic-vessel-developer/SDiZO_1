@@ -13,5 +13,8 @@ int main() {
     test->delete_root();
     test->show();
 
+    int* temp = test->search(13);
+    std::cout << *temp;
+
     return 0;
 }

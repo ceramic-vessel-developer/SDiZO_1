@@ -18,16 +18,18 @@ private:
 public:
     max_heap(int size);
 
+    ~max_heap();
+
     void add(int item);
 
     void delete_root();
 
     void heap_fix_up();
-    void heap_fix_down();
+    void heap_fix_down(int index = 0);
     int heap_fix_down_floyd(int counter);
 
     void show();
-    int search(int item);
+    int* search(int item);
 
 
 };
