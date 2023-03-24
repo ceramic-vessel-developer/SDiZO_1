@@ -23,7 +23,8 @@ public:
     void delete_root();
 
     void heap_fix_up();
-    void heap_fix_down(int counter);
+    void heap_fix_down();
+    int heap_fix_down_floyd(int counter);
 
     void show();
     int search(int item);

@@ -7,6 +7,11 @@ int main() {
     max_heap* test = new max_heap(7);
     test->show();
 
+    test->add(13);
+    test->show();
+
+    test->delete_root();
+    test->show();
 
     return 0;
 }
