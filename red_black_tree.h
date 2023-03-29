@@ -20,12 +20,14 @@ public:
     red_black_tree();
 
     void add(int value);
-    void del(int value);
+    void del(Node* node);
     Node* search(int value);
 
     void rotate_right(Node* node);
     void rotate_left(Node* node);
-    void fix(Node* node);
+    void fix_add(Node* node);
+    void fix_delete(Node* node);
+    Node* find_replacement(Node* node);
 
     void show_inorder();
 
