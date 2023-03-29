@@ -25,6 +25,7 @@ public:
 
     void rotate_right(Node* node);
     void rotate_left(Node* node);
+    void fix(Node* node);
 
     void show_inorder();
 
