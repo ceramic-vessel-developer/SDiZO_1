@@ -34,8 +34,49 @@ void red_black_tree::add(int value) {
 }
 
 void red_black_tree::del(Node* node) {
-;
+    Node* changed_node;
+    char deleted_colour;
+    Node* replacement_node = find_replacement(node);
+
+    if (not replacement_node || replacement_node->parent == node){
+        deleted_colour = node->colour;
+
+        if (not replacement_node){
+            
+
+        }else if (replacement_node == node->left){
+
+        }else{
+
+        }
+
+
+    }else{
+        node->data = replacement_node->data;
+        deleted_colour = replacement_node->colour;
+
+
+    }
+    
 }
+
+red_black_tree::Node *red_black_tree::find_replacement(red_black_tree::Node *node) {
+    if (not node->right && not node->left){
+        return nullptr;
+    }else if (not node->right){
+        return node->left;
+    }else if (not node->left){
+        return node->right;
+    }
+
+    Node* current_node = node->right;
+    while (current_node->left){
+        current_node = current_node->left;
+    }
+
+    return current_node;
+}
+
 
 red_black_tree::Node *red_black_tree::search(int value) {
     Node* temp = root;
@@ -154,19 +195,3 @@ void red_black_tree::fix_add(red_black_tree::Node *node) {
 
 }
 
-red_black_tree::Node *red_black_tree::find_replacement(red_black_tree::Node *node) {
-    if (not node->right && not node->left){
-        return nullptr;
-    }else if (not node->right){
-        return node->left;
-    }else if (not node->left){
-        return node->right;
-    }
-
-    Node* current_node = node->right;
-    while (current_node->left){
-        current_node = current_node->left;
-    }
-
-    return current_node;
-}

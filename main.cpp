@@ -2,19 +2,11 @@
 #include "dynamic_array.h"
 #include "double_linked_list.h"
 #include "max_heap.h"
+#include "red_black_tree.h"
 
 int main() {
-    max_heap* test = new max_heap(7);
+    red_black_tree* test = new red_black_tree();
     test->show();
-
-    test->add(13);
-    test->show();
-
-    test->delete_root();
-    test->show();
-
-    int* temp = test->search(13);
-    std::cout << *temp;
 
     return 0;
 }
