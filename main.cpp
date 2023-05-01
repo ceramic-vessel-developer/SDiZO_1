@@ -3,9 +3,10 @@
 #include "double_linked_list.h"
 #include "max_heap.h"
 #include "red_black_tree.h"
+#include "avl.h"
 
 int main() {
-    red_black_tree* test = new red_black_tree();
+    avl* test = new avl(12);
     test->show();
 
     return 0;
