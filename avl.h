@@ -37,6 +37,14 @@ public:
     void add(int value);
 
     int get_height(Node *node);
+
+    Node* search(Node* node,int key);
+
+    Node *delete_node(Node *root, int key);
+
+    Node *succesor(Node *node);
+
+    void remove(int key);
 };
 
 

@@ -118,3 +118,74 @@ avl::avl(int size) {
         add(i);
     }
 }
+
+avl::Node *avl::search(Node* node,int key) {
+    if (node == nullptr){
+        std::cout <<"There is no such key in that tree!\n";
+    }
+    if (key < node->value){
+        return search(node->left, key);
+    }else if (key > node->value){
+        return search(node->right,key);
+    }else{
+        return node;
+    }
+}
+
+avl::Node* avl::delete_node(Node* root, int key) {
+    if (root == nullptr) {
+        return root;
+    }
+    if (key < root->value) {
+        root->left = delete_node(root->left, key);
+    }else if (key > root->value) {
+        root->right = delete_node(root->right, key);
+    }else {
+        if (root->left == nullptr || root->right == nullptr) {
+            Node* temp = root->left ? root->left : root->right;
+            if (temp == nullptr) {
+                temp = root;
+                root = nullptr;
+            }else {
+                *root = *temp;
+            }
+            delete temp;
+        }else {
+            Node* temp = succesor(root->right);
+            root->value = temp->value;
+            root->right = delete_node(root->right, temp->value);
+        }
+    }
+    if (root == nullptr) {
+        return root;
+    }
+    root->height = 1 + std::max(get_height(root->left), get_height(root->right));
+    int balance = balance_factor(root);
+    if (balance > 1 && balance_factor(root->left) >= 0) {
+        return rotate_right(root);
+    }
+    if (balance > 1 && balance_factor(root->left) < 0) {
+        root->left = rotate_left(root->left);
+        return rotate_right(root);
+    }
+    if (balance < -1 && balance_factor(root->right) <= 0) {
+        return rotate_left(root);
+    }
+    if (balance < -1 && balance_factor(root->right) > 0) {
+        root->right = rotate_right(root->right);
+        return rotate_left(root);
+    }
+    return root;
+}
+
+avl::Node* avl::succesor(Node* node) {
+    Node* current = node;
+    while (current->left != nullptr) {
+        current = current->left;
+    }
+    return current;
+}
+
+void avl::remove(int key){
+    delete_node(root,key);
+}
