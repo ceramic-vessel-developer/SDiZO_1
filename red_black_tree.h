@@ -44,8 +44,10 @@ public:
 
     void add(int key);
     void deleteNode(int key);
+    int *select(int key);
 
-    Node *search(Node *node, int key);};
+    Node *search(Node *node, int key);
+};
 
 
 #endif //SDIZO_1_RED_BLACK_TREE_H

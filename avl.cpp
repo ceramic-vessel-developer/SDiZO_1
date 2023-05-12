@@ -189,3 +189,7 @@ avl::Node* avl::succesor(Node* node) {
 void avl::remove(int key){
     delete_node(root,key);
 }
+
+int *avl::select(int key) {
+    return &search(root,key)->value;
+}

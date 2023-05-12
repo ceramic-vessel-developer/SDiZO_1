@@ -254,6 +254,10 @@ void red_black_tree::deleteNode(int key) {
     }
 }
 
+int *red_black_tree::select(int key) {
+    return &search(root, key)->data;
+}
+
 
 
 

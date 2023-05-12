@@ -38,6 +38,8 @@ public:
 
     int get_height(Node *node);
 
+    int* select(int key);
+
     Node* search(Node* node,int key);
 
     Node *delete_node(Node *root, int key);
