@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <windows.h>
 #include "dynamic_array.h"
 #include "double_linked_list.h"
 #include "max_heap.h"
@@ -16,6 +18,12 @@ void avl();
 int main() {
     int choice;
     bool error = true;
+    std::fstream f;
+    std::string path = "../txt_files/array.txt";
+    f.open(path,std::ios::out);
+    f << "uwu" << error << ' ' << "lol" << '\n' << "aaaa" << std::endl << "xD";
+    f.close();
+
     while (error) {
         std::cout << "Wybierz funkcjonalnosc programu:\n1)Badania\n2)Testowanie funkcjonalnosci" << std::endl;
 
@@ -71,14 +79,566 @@ void test(){
     }
 }
 
-void research(){
-    ;
+void array_research(){
+    //setup
+    const int number_of_tests = 100;
+    int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
+    int size;
+    long double times [7] = {0,0,0,0,0,0,0};
+    long double elapsed_time_double;
+    LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
+    dynamic_array* research_array;
+    std::fstream f;
+    std::string path = "../txt_files/array.txt";
+
+    QueryPerformanceFrequency(&frequency);
+
+    f.open(path,std::ios::out);
+    f.close();
+
+    //main loop with sizes
+    for (int i = 0; i < 9; ++i) {
+        //main loop setup
+        size = sizes[i];
+
+        //add_back loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add_back(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[0] += elapsed_time_double;
+        }
+        times[0] /= number_of_tests;
+
+        //add_front loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add_front(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[1] += elapsed_time_double;
+        }
+        times[1] /= number_of_tests;
+
+        //add loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add(rand(),rand()%size);
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[2] += elapsed_time_double;
+        }
+        times[2] /= number_of_tests;
+
+        //delete_front loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_front();
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[3] += elapsed_time_double;
+        }
+        times[3] /= number_of_tests;
+
+        //delete_back loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_back();
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[4] += elapsed_time_double;
+        }
+        times[4] /= number_of_tests;
+
+        //delete_with_index loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_with_index(rand()%size);
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[5] += elapsed_time_double;
+        }
+        times[5] /= number_of_tests;
+
+        //search loop
+        int value;
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new dynamic_array(size);
+            value = rand();
+            QueryPerformanceCounter(&start_time);
+            research_array->select(value);
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[6] += elapsed_time_double;
+        }
+        times[6] /= number_of_tests;
+
+        // writing to file
+
+        f.open(path,std::ios::app);
+        f << size << ' ' << times[0] << ' ' << times[1] << ' ' << times[2] << ' '<< times[3] << ' '<< times[4] << ' '<< times[5] << ' '<< times[6] << ' ' << std::endl;
+        f.close();
+    }
+
+}
+
+void list_research(){
+    //setup
+    const int number_of_tests = 100;
+    int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
+    int size;
+    long double times [7] = {0,0,0,0,0,0,0};
+    long double elapsed_time_double;
+    LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
+    double_linked_list* research_array;
+    std::fstream f;
+    std::string path = "../txt_files/list.txt";
+
+    QueryPerformanceFrequency(&frequency);
+
+    f.open(path,std::ios::out);
+    f.close();
+
+    //main loop with sizes
+    for (int i = 0; i < 9; ++i) {
+        //main loop setup
+        size = sizes[i];
+
+        //add_back loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add_back(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[0] += elapsed_time_double;
+        }
+        times[0] /= number_of_tests;
+
+        //add_front loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add_front(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[1] += elapsed_time_double;
+        }
+        times[1] /= number_of_tests;
+
+        //add loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add(rand(),rand()%size);
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[2] += elapsed_time_double;
+        }
+        times[2] /= number_of_tests;
+
+        //delete_front loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_front();
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[3] += elapsed_time_double;
+        }
+        times[3] /= number_of_tests;
+
+        //delete_back loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_back();
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[4] += elapsed_time_double;
+        }
+        times[4] /= number_of_tests;
+
+        //delete_with_index loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_with_index(rand()%size);
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[5] += elapsed_time_double;
+        }
+        times[5] /= number_of_tests;
+
+        //search loop
+        int value;
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new double_linked_list(size);
+            value = rand();
+            QueryPerformanceCounter(&start_time);
+            research_array->select(value);
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[6] += elapsed_time_double;
+        }
+        times[6] /= number_of_tests;
+
+        // writing to file
+
+        f.open(path,std::ios::app);
+        f << size << ' ' << times[0] << ' ' << times[1] << ' ' << times[2] << ' '<< times[3] << ' '<< times[4] << ' '<< times[5] << ' '<< times[6] << ' ' << std::endl;
+        f.close();
+    }
+
+}
+
+void heap_research(){
+    //setup
+    const int number_of_tests = 100;
+    int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
+    int size;
+    long double times [3] = {0,0,0};
+    long double elapsed_time_double;
+    LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
+    max_heap* research_array;
+    std::fstream f;
+    std::string path = "../txt_files/heap.txt";
+
+    QueryPerformanceFrequency(&frequency);
+
+    f.open(path,std::ios::out);
+    f.close();
+
+    //main loop with sizes
+    for (int i = 0; i < 9; ++i) {
+        //main loop setup
+        size = sizes[i];
+
+        //add loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new max_heap(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[0] += elapsed_time_double;
+        }
+        times[0] /= number_of_tests;
+
+        //delete loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new max_heap(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->delete_root();
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[1] += elapsed_time_double;
+        }
+        times[1] /= number_of_tests;
+
+        //search loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new max_heap(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->search(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[2] += elapsed_time_double;
+        }
+        times[2] /= number_of_tests;
+
+        // writing to file
+
+        f.open(path,std::ios::app);
+        f << size << ' ' << times[0] << ' ' << times[1] << ' ' << times[2] << ' ' << std::endl;
+        f.close();
+    }
+
+}
+
+void rb_tree_research(){
+    //setup
+    const int number_of_tests = 100;
+    int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
+    int size;
+    long double times [3] = {0,0,0};
+    long double elapsed_time_double;
+    LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
+    red_black_tree* research_array;
+    std::fstream f;
+    std::string path = "../txt_files/rb.txt";
+
+    QueryPerformanceFrequency(&frequency);
+
+    f.open(path,std::ios::out);
+    f.close();
+
+    //main loop with sizes
+    for (int i = 0; i < 9; ++i) {
+        //main loop setup
+        size = sizes[i];
+
+        //add loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new red_black_tree(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[0] += elapsed_time_double;
+        }
+        times[0] /= number_of_tests;
+
+        //delete loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new red_black_tree(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->deleteNode(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[1] += elapsed_time_double;
+        }
+        times[1] /= number_of_tests;
+
+        //search loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new red_black_tree(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->select(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[2] += elapsed_time_double;
+        }
+        times[2] /= number_of_tests;
+
+        // writing to file
+
+        f.open(path,std::ios::app);
+        f << size << ' ' << times[0] << ' ' << times[1] << ' ' << times[2] << ' ' << std::endl;
+        f.close();
+    }
+
+}
+
+void avl_tree_research() {
+    //setup
+    const int number_of_tests = 100;
+    int sizes[] = {100, 200, 500, 700, 1000, 2000, 5000, 7000, 10000};
+    int size;
+    long double times[3] = {0, 0, 0};
+    long double elapsed_time_double;
+    LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
+    class avl *research_array;
+    std::fstream f;
+    std::string path = "../txt_files/avl.txt";
+
+    QueryPerformanceFrequency(&frequency);
+
+    f.open(path, std::ios::out);
+    f.close();
+
+    //main loop with sizes
+    for (int i = 0; i < 9; ++i) {
+        //main loop setup
+        size = sizes[i];
+
+        //add loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new class avl(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->add(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[0] += elapsed_time_double;
+        }
+        times[0] /= number_of_tests;
+
+        //delete loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new class avl(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->remove(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[1] += elapsed_time_double;
+        }
+        times[1] /= number_of_tests;
+
+        //search loop
+        for (int j = 0; j < number_of_tests; ++j) {
+            research_array = new class avl(size);
+
+            QueryPerformanceCounter(&start_time);
+            research_array->select(rand());
+            QueryPerformanceCounter(&end_time);
+
+            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
+            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
+            elapsed_time_double *= 1000000000; // result in nanoseconds
+            elapsed_time_double /= frequency.QuadPart;
+
+            times[2] += elapsed_time_double;
+        }
+        times[2] /= number_of_tests;
+
+        // writing to file
+
+        f.open(path, std::ios::app);
+        f << size << ' ' << times[0] << ' ' << times[1] << ' ' << times[2] << ' ' << std::endl;
+        f.close();
+    }
+}
+
+    void research(){
+    array_research();
+    list_research();
+    //heap_research();
+    rb_tree_research();
+    avl_tree_research();
 }
 
 void array(){
     int choice;
     int size;
     int temp;
+    int* temp_p;
     int index;
     bool run = true;
     dynamic_array* test;
@@ -94,7 +654,7 @@ void array(){
                 //TODO zrob obsluge plikow
                 break;
             case 2:
-                std::cout << "Wpisz wielkosc tablicy";
+                std::cout << "Wpisz wielkosc tablicy" <<std::endl;
                 std::cin >> size;
                 test = new dynamic_array(size);
                 run = false;
@@ -147,11 +707,16 @@ void array(){
                 std::cin >> index;
                 test->delete_with_index(index);
                 break;
-            // Searching at specified index
+            // Searching value
             case 7:
-                std::cout << "Podaj indeks" << std::endl;
+                std::cout << "Podaj wartosc" << std::endl;
                 std::cin >> index;
-                test->select(index);
+                temp_p = test->select(index);
+                if (temp_p){
+                    std::cout << temp_p << ' ' << *temp_p << std::endl;
+                }else{
+                    std::cout << "Nie ma takiego elementu w tej tablicy" << std::endl;
+                }
                 break;
             // Showing the array
             case 8:
@@ -173,6 +738,7 @@ void list(){
     int choice;
     int size;
     int temp;
+    int* temp_p;
     int index;
     bool run = true;
     double_linked_list* test;
@@ -188,7 +754,7 @@ void list(){
                 //TODO zrob obsluge plikow
                 break;
             case 2:
-                std::cout << "Wpisz wielkosc tablicy";
+                std::cout << "Wpisz wielkosc listy"<<std::endl;
                 std::cin >> size;
                 test = new double_linked_list(size);
                 run = false;
@@ -201,7 +767,7 @@ void list(){
         }
     }
 
-    //Menu for array testing
+    //Menu for list testing
 
     while (true){
         std::cout << "Wybierz dzialanie (lista):\n1)Dodaj na poczatek\n2)Dodaj na koniec\n3)Dodaj (indeks)\n4)Usun z przodu\n5)Usun z konca\n6)Usun(indeks)\n7)Wyszukaj\n8)Pokaz\n9)Powrot" << std::endl;
@@ -243,9 +809,14 @@ void list(){
                 break;
             // Searching with index
             case 7:
-                std::cout << "Podaj indeks" << std::endl;
+                std::cout << "Podaj wartosc" << std::endl;
                 std::cin >> index;
-                test->select(index);
+                temp_p = test->select(index);
+                if (temp_p){
+                    std::cout << temp_p << ' ' << *temp_p << std::endl;
+                }else{
+                    std::cout << "Taka wartosc nie istnieje w tej liscie" << std::endl;
+                }
                 break;
             // Showing the list
             case 8:
@@ -283,7 +854,7 @@ void avl(){
                 //TODO zrob obsluge plikow
                 break;
             case 2:
-                std::cout << "Wpisz wielkosc drzewa";
+                std::cout << "Wpisz wielkosc drzewa"<<std::endl;
                 std::cin >> size;
                 test = new class avl(size);
                 run = false;
@@ -361,7 +932,7 @@ void tree(){
                 //TODO zrob obsluge plikow
                 break;
             case 2:
-                std::cout << "Wpisz wielkosc drzewa";
+                std::cout << "Wpisz wielkosc drzewa"<<std::endl;
                 std::cin >> size;
                 test = new red_black_tree(size);
                 run = false;
@@ -437,7 +1008,7 @@ void heap(){
                 //TODO zrob obsluge plikow
                 break;
             case 2:
-                std::cout << "Wpisz wielkosc kopca";
+                std::cout << "Wpisz wielkosc kopca"<<std::endl;
                 std::cin >> size;
                 test = new max_heap(size);
                 run = false;

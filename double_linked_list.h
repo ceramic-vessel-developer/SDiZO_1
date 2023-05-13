@@ -28,7 +28,7 @@ public:
     bool delete_back();
     bool delete_with_index(int index);
 
-    int select(int index);
+    int* select(int value);
 
     void show();
 

@@ -122,13 +122,15 @@ bool double_linked_list::delete_with_index(int index) {
     return true;
 }
 
-int double_linked_list::select(int index) {
-    dll_elem* temp = search(index);
-    if (not temp){
-        std::cout << "Nieprawidlowy indeks" << std::endl;
-        return 0;
+int* double_linked_list::select(int value) {
+    dll_elem* temp = first;
+    while (temp){
+        if (temp->value == value){
+            return &temp->value;
+        }
+        temp = temp->next;
     }
-    return temp->value;
+    return nullptr;
 }
 
 void double_linked_list::show() {

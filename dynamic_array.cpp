@@ -86,12 +86,13 @@ void dynamic_array::delete_front() {
     size--;
 }
 
-int dynamic_array::select(int index) {
-    if (index+1>size){
-        std::cout << "Indeks poza zakresem" << std::endl;
-        return 0;
+int* dynamic_array::select(int value) {
+    for (int i = 0; i < size; ++i) {
+        if (array[i] == value) {
+            return &array[i];
+        }
     }
-    return array[index];
+    return nullptr;
 }
 
 void dynamic_array::show() {

@@ -24,7 +24,7 @@ public:
     void delete_back();
     void delete_with_index(int index);
 
-    int select(int index);
+    int* select(int value);
 
     void swap(int index_a, int index_b);
     int get_size();
