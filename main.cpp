@@ -320,7 +320,9 @@ void avl(){
                 std::cout << "Podaj wartosc" << std::endl;
                 std::cin >> value;
                 temp = test->select(value);
-                std::cout << temp << " " << *temp << std::endl;
+                if (temp) {
+                    std::cout << temp << " " << *temp << std::endl;
+                }
                 break;
             // Showing the avl tree
             case 4:

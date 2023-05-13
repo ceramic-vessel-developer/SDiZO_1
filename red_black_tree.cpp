@@ -255,7 +255,11 @@ void red_black_tree::deleteNode(int key) {
 }
 
 int *red_black_tree::select(int key) {
-    return &search(root, key)->data;
+    Node* temp = search(root, key);
+    if (temp == NIL){
+        std::cout << "There is no such key!" << std::endl;
+    }
+    return &temp->data;
 }
 
 

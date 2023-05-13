@@ -122,6 +122,7 @@ avl::avl(int size) {
 avl::Node *avl::search(Node* node,int key) {
     if (node == nullptr){
         std::cout <<"There is no such key in that tree!\n";
+        return nullptr;
     }
     if (key < node->value){
         return search(node->left, key);
@@ -149,6 +150,7 @@ avl::Node* avl::delete_node(Node* root, int key) {
             }else {
                 *root = *temp;
             }
+            if (temp == this->root) this->root = nullptr;
             delete temp;
         }else {
             Node* temp = succesor(root->right);
@@ -191,5 +193,9 @@ void avl::remove(int key){
 }
 
 int *avl::select(int key) {
-    return &search(root,key)->value;
+    Node *temp = search(root, key);
+    if (temp){
+        return &temp->value;
+    }
+    return nullptr;
 }

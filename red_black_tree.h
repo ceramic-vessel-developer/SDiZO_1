@@ -18,6 +18,7 @@ private:
     Node* NIL = new Node{nullptr, nullptr, nullptr, 'B', 0};
     Node* root = NIL;
 public:
+
     red_black_tree();
     red_black_tree(int size);
 
