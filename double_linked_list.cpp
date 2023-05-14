@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <fstream>
 #include "double_linked_list.h"
 
 double_linked_list::double_linked_list(int size) {
@@ -156,4 +157,32 @@ double_linked_list::dll_elem *double_linked_list::search(int index) {
         }
     }
     return temp;
+}
+
+double_linked_list::double_linked_list(std::string file) {
+    std::string path = "../input_files/"+file;
+    std::fstream f;
+    int input;
+
+    f.open(path);
+    if (f.is_open()){
+        f >> input;
+        while (f >> input){
+            add_back(input);
+        }
+        f.close();
+    }else{
+        std::cout << "Plik nie zostal otwarty poprawnie" << std::endl;
+    }
+}
+
+double_linked_list::~double_linked_list() {
+    clear(first);
+}
+
+void double_linked_list::clear(double_linked_list::dll_elem *elem) {
+    if (elem){
+        clear(elem->next);
+        delete elem;
+    }
 }

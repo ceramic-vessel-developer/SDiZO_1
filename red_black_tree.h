@@ -15,12 +15,14 @@ private:
         char colour = 'R';
         int data;
     };
-    Node* NIL = new Node{nullptr, nullptr, nullptr, 'B', 0};
+
     Node* root = NIL;
 public:
-
+    Node* NIL = new Node{nullptr, nullptr, nullptr, 'B', 0};
     red_black_tree();
     red_black_tree(int size);
+    red_black_tree(std::string file);
+    ~red_black_tree();
 
     void left_rotate(Node* x);
 
@@ -48,6 +50,7 @@ public:
     int *select(int key);
 
     Node *search(Node *node, int key);
+    void clear(Node* node);
 };
 
 

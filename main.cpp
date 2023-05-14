@@ -5,7 +5,6 @@
 #include "double_linked_list.h"
 #include "max_heap.h"
 #include "red_black_tree.h"
-#include "avl.h"
 
 void research();
 void test();
@@ -13,7 +12,7 @@ void array();
 void list();
 void heap();
 void tree();
-void avl();
+
 
 int main() {
     int choice;
@@ -51,7 +50,7 @@ int main() {
 void test(){
     int choice;
     while (true){
-        std::cout << "Wybierz strukture ktora chcesz przetestowac\n1)Dynamiczna tablica\n2)lista dwukierunkowa\n3)Kopiec\n4)Drzewo czerwono-czarne\n5)Drzewo AVL\n6)Powrot" << std::endl;
+        std::cout << "Wybierz strukture ktora chcesz przetestowac\n1)Dynamiczna tablica\n2)lista dwukierunkowa\n3)Kopiec\n4)Drzewo czerwono-czarne\n5)Powrot" << std::endl;
         std::cin >> choice;
 
         switch (choice) {
@@ -68,9 +67,6 @@ void test(){
                 tree();
                 break;
             case 5:
-                avl();
-                break;
-            case 6:
                 return;
             default:
                 std::cout << "Bledna wartosc" << std::endl;
@@ -560,96 +556,11 @@ void rb_tree_research(){
 
 }
 
-void avl_tree_research() {
-    //setup
-    const int number_of_tests = 100;
-    int sizes[] = {100, 200, 500, 700, 1000, 2000, 5000, 7000, 10000};
-    int size, value;
-    long double times[3] = {0, 0, 0};
-    long double elapsed_time_double;
-    LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
-    class avl *research_array;
-    std::fstream f;
-    std::string path = "../txt_files/avl.txt";
-
-    QueryPerformanceFrequency(&frequency);
-
-    f.open(path, std::ios::out);
-    f.close();
-
-    //main loop with sizes
-    for (int i = 0; i < 9; ++i) {
-        //main loop setup
-        size = sizes[i];
-
-        //add loop
-        for (int j = 0; j < number_of_tests; ++j) {
-            research_array = new class avl(size);
-            value = rand();
-
-            QueryPerformanceCounter(&start_time);
-            research_array->add(value);
-            QueryPerformanceCounter(&end_time);
-
-            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
-            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
-            elapsed_time_double *= 1000000000; // result in nanoseconds
-            elapsed_time_double /= frequency.QuadPart;
-
-            times[0] += elapsed_time_double;
-        }
-        times[0] /= number_of_tests;
-
-        //delete loop
-        for (int j = 0; j < number_of_tests; ++j) {
-            research_array = new class avl(size);
-            value = rand();
-
-            QueryPerformanceCounter(&start_time);
-            research_array->remove(value);
-            QueryPerformanceCounter(&end_time);
-
-            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
-            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
-            elapsed_time_double *= 1000000000; // result in nanoseconds
-            elapsed_time_double /= frequency.QuadPart;
-
-            times[1] += elapsed_time_double;
-        }
-        times[1] /= number_of_tests;
-
-        //search loop
-        for (int j = 0; j < number_of_tests; ++j) {
-            research_array = new class avl(size);
-            value = rand();
-
-            QueryPerformanceCounter(&start_time);
-            research_array->select(value);
-            QueryPerformanceCounter(&end_time);
-
-            elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
-            elapsed_time_double = static_cast<long double>(elapsed_time.QuadPart);
-            elapsed_time_double *= 1000000000; // result in nanoseconds
-            elapsed_time_double /= frequency.QuadPart;
-
-            times[2] += elapsed_time_double;
-        }
-        times[2] /= number_of_tests;
-
-        // writing to file
-
-        f.open(path, std::ios::app);
-        f << size << ' ' << times[0] << ' ' << times[1] << ' ' << times[2] << ' ' << std::endl;
-        f.close();
-    }
-}
-
 void research(){
     array_research();
     list_research();
     heap_research();
     rb_tree_research();
-    avl_tree_research();
 }
 
 void array(){
@@ -658,6 +569,7 @@ void array(){
     int temp;
     int* temp_p;
     int index;
+    std::string file;
     bool run = true;
     dynamic_array* test;
 
@@ -669,7 +581,10 @@ void array(){
 
         switch (choice) {
             case 1:
-                //TODO zrob obsluge plikow
+                std::cout << "Podaj nazwe pliku w folderze \"input_files\"" << std::endl;
+                std::cin >> file;
+                test = new dynamic_array(file);
+                run = false;
                 break;
             case 2:
                 std::cout << "Wpisz wielkosc tablicy" <<std::endl;
@@ -759,6 +674,7 @@ void list(){
     int* temp_p;
     int index;
     bool run = true;
+    std::string file;
     double_linked_list* test;
 
     //Menu for creating array
@@ -769,7 +685,10 @@ void list(){
 
         switch (choice) {
             case 1:
-                //TODO zrob obsluge plikow
+                std::cout << "Podaj nazwe pliku w folderze \"input_files\"" << std::endl;
+                std::cin >> file;
+                test = new double_linked_list(file);
+                run = false;
                 break;
             case 2:
                 std::cout << "Wpisz wielkosc listy"<<std::endl;
@@ -853,90 +772,13 @@ void list(){
 
 }
 
-void avl(){
-    int choice;
-    int size;
-    int* temp;
-    int value;
-    bool run = true;
-    class avl* test;
-
-    //Menu for creating avl tree
-
-    while (run){
-        std::cout << "Wybierz dzialanie (tworzenie drzeva avl):\n1)Stworz drzewo z pliku\n2)Stworz drzewo losowo\n3)Powrot" << std::endl;
-        std::cin >> choice;
-
-        switch (choice) {
-            case 1:
-                //TODO zrob obsluge plikow
-                break;
-            case 2:
-                std::cout << "Wpisz wielkosc drzewa"<<std::endl;
-                std::cin >> size;
-                test = new class avl(size);
-                run = false;
-                break;
-            case 3:
-                return;
-            default:
-                std::cout << "Bledna wartosc";
-                break;
-        }
-    }
-
-    //Menu for avl tree testing
-
-    while (true){
-        std::cout << "Wybierz dzialanie (drzewo avl):\n1)Dodaj\n2)Usun\n3)Wyszukaj\n4)Pokaz\n5)Powrot" << std::endl;
-        std::cin >> choice;
-        switch (choice) {
-            // Adding
-            case 1:
-                std::cout << "Podaj wartosc do dodania" << std::endl;
-                std::cin >> value;
-                test->add(value);
-                break;
-            //Deleting
-            case 2:
-                std::cout << "Podaj wartosc do usuniecia" << std::endl;
-                std::cin >> value;
-                test->remove(value);
-                break;
-
-            // Searching specified value
-            case 3:
-                std::cout << "Podaj wartosc" << std::endl;
-                std::cin >> value;
-                temp = test->select(value);
-                if (temp) {
-                    std::cout << temp << " " << *temp << std::endl;
-                }
-                break;
-            // Showing the avl tree
-            case 4:
-                test->show();
-                break;
-            // Exiting from menu
-            case 5:
-                delete test;
-                return;
-            // Catching invalid input
-            default:
-                std::cout << "Bledna wartosc" << std::endl;
-                break;
-        }
-    }
-
-
-}
-
 void tree(){
     int choice;
     int size;
     int * temp;
     int value;
     bool run = true;
+    std::string file;
     red_black_tree* test;
 
     //Menu for creating rb tree
@@ -947,7 +789,10 @@ void tree(){
 
         switch (choice) {
             case 1:
-                //TODO zrob obsluge plikow
+                std::cout << "Podaj nazwe pliku w folderze \"input_files\"" << std::endl;
+                std::cin >> file;
+                test = new red_black_tree(file);
+                run = false;
                 break;
             case 2:
                 std::cout << "Wpisz wielkosc drzewa"<<std::endl;
@@ -987,7 +832,12 @@ void tree(){
                 std::cout << "Podaj wartosc" << std::endl;
                 std::cin >> value;
                 temp = test->select(value);
-                std::cout << temp << " " << *temp << std::endl;
+                if (temp != &test->NIL->data){
+                    std::cout << temp << " " << *temp << std::endl;
+                }else{
+                    std::cout << "Nie znaleziono wartosci w drzewie" << std::endl;
+                }
+
                 break;
             // Showing the tree
             case 4:
@@ -1013,6 +863,7 @@ void heap(){
     int* temp;
     int value;
     bool run = true;
+    std::string file;
     max_heap* test;
 
     //Menu for creating heap
@@ -1023,7 +874,10 @@ void heap(){
 
         switch (choice) {
             case 1:
-                //TODO zrob obsluge plikow
+                std::cout << "Podaj nazwe pliku w folderze \"input_files\"" << std::endl;
+                std::cin >> file;
+                test = new max_heap(file);
+                run = false;
                 break;
             case 2:
                 std::cout << "Wpisz wielkosc kopca"<<std::endl;
@@ -1060,7 +914,12 @@ void heap(){
                 std::cout << "Podaj wartosc" << std::endl;
                 std::cin >> value;
                 temp = test->search(value);
-                std::cout << temp << " " << *temp << std::endl;
+                if(!temp){
+                    std::cout << "Nie znaleziono takiej wartosci w kopcu" << std::endl;
+                }else{
+                    std::cout << temp << " " << *temp << std::endl;
+                }
+
                 break;
                 // Showing the heap
             case 4:

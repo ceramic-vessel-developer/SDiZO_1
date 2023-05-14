@@ -13,8 +13,9 @@ private:
     int size;
 public:
 
-    dynamic_array(int* static_array, int static_size);
     dynamic_array(int size);
+    dynamic_array(std::string file);
+    ~dynamic_array();
 
     void add_front(int item);
     void add_back(int item);
@@ -25,9 +26,6 @@ public:
     void delete_with_index(int index);
 
     int* select(int value);
-
-    void swap(int index_a, int index_b);
-    int get_size();
 
     void show();
 

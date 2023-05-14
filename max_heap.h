@@ -17,6 +17,7 @@ private:
     int len(int number);
 public:
     max_heap(int size);
+    max_heap(std::string file);
 
     ~max_heap();
 

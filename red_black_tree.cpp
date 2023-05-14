@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #include "red_black_tree.h"
 void red_black_tree::left_rotate(Node* x){
     Node* y = x->right;
@@ -254,8 +255,6 @@ void red_black_tree::deleteNode(int key) {
     Node* temp = search(root,key);
     if (temp != NIL){
         rb_delete(temp);
-    } else{
-     ;
     }
 }
 
@@ -265,6 +264,37 @@ int *red_black_tree::select(int key) {
         ;
     }
     return &temp->data;
+}
+
+red_black_tree::red_black_tree(std::string file) {
+    std::string path = "../input_files/"+file;
+    std::fstream f;
+    int input;
+
+    f.open(path);
+    if (f.is_open()){
+        f >> input;
+        Node* temp = new Node;
+        while (f >> input){
+            temp = create_node(input);
+            rb_insert(temp);
+        }
+        f.close();
+    }else{
+        std::cout << "Plik nie zostal otwarty poprawnie" << std::endl;
+    }
+}
+
+void red_black_tree::clear(red_black_tree::Node *node) {
+    if (node){
+        clear(node->right);
+        clear(node->left);
+        delete node;
+    }
+}
+
+red_black_tree::~red_black_tree() {
+    clear(root);
 }
 
 

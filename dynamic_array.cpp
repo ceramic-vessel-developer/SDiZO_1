@@ -3,14 +3,12 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "dynamic_array.h"
 
 
 
-dynamic_array::dynamic_array(int* static_array, int static_size) {
-    array = static_array;
-    size = static_size;
-}
+
 
 void dynamic_array::add_front(int item) {
     int* temp = new int[size+1];
@@ -103,16 +101,6 @@ void dynamic_array::show() {
 
 }
 
-void dynamic_array::swap(int index_a, int index_b) {
-    int temp = array[index_a];
-    array[index_a] = array[index_b];
-    array[index_b] = temp;
-}
-
-int dynamic_array::get_size() {
-    return size;
-}
-
 dynamic_array::dynamic_array(int size) {
     if (size < 0) size = 0;
 
@@ -123,6 +111,32 @@ dynamic_array::dynamic_array(int size) {
         array[i] = rand();
     }
 
+}
+
+dynamic_array::dynamic_array(std::string file) {
+    std::string path = "../input_files/"+file;
+    std::fstream f;
+    int input, i=0;
+
+    f.open(path);
+    if (f.is_open()){
+        f >> input;
+        array = new int[input];
+        this->size = input;
+        while (f >> input){
+            if (i >= size) break;
+            array[i] = input;
+            i++;
+        }
+        f.close();
+    }else{
+        std::cout << "Plik nie zostal otwarty poprawnie" << std::endl;
+    }
+
+}
+
+dynamic_array::~dynamic_array() {
+    delete array;
 }
 
 

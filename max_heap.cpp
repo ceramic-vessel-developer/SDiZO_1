@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "max_heap.h"
 #include "cmath"
 
@@ -139,4 +140,32 @@ void max_heap::heap_fix_down(int index) {
 
 max_heap::~max_heap() {
     delete[] heap_array;
+}
+
+max_heap::max_heap(std::string file) {
+    std::string path = "../input_files/"+file;
+    std::fstream f;
+    int input, i = 0;
+
+    f.open(path);
+    if (f.is_open()){
+        f >> input;
+        heap_size = input;
+        heap_max_size = input + input/2;
+        heap_array = new int[heap_max_size];
+
+        while (f >> input){
+            if (i >= heap_size) break;
+            heap_array[i] = input;
+            i++;
+        }
+
+        for (i = (heap_size-2)/2; i >=0 ; --i) {
+            heap_fix_down(i);
+        }
+        f.close();
+    }else{
+        std::cout << "Plik nie zostal otwarty poprawnie" << std::endl;
+    }
+
 }

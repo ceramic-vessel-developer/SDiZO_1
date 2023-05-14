@@ -19,6 +19,10 @@ private:
     dll_elem* search(int index);
 public:
     double_linked_list(int size);
+    double_linked_list(std::string file);
+    ~double_linked_list();
+
+    void clear(dll_elem* elem);
 
     void add_front(int item);
     void add_back(int item);
