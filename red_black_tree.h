@@ -15,30 +15,29 @@ private:
         char colour = 'R';
         int data;
     };
-
-    Node* root = NIL;
 public:
     Node* NIL = new Node{nullptr, nullptr, nullptr, 'B', 0};
+    Node* root = NIL;
     red_black_tree();
     red_black_tree(int size);
     red_black_tree(std::string file);
     ~red_black_tree();
 
-    void left_rotate(Node* x);
+    void left_rotate(Node* node);
 
-    void right_rotate(Node *y);
+    void right_rotate(Node *node);
 
-    void rb_insert_fixup(Node *z);
+    void rb_insert_fixup(Node *node);
 
-    void rb_insert(Node *z);
+    void rb_insert(Node *new_node);
 
     void rb_transplant(Node *u, Node *v);
 
     Node *tree_minimum(Node *node);
 
-    void rb_delete_fixup(Node *x);
+    void rb_delete_fixup(Node *node);
 
-    void rb_delete(Node *z);
+    void rb_delete(Node *node);
 
     Node *create_node(int data);
 

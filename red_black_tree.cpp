@@ -6,99 +6,100 @@
 #include <iomanip>
 #include <fstream>
 #include "red_black_tree.h"
-void red_black_tree::left_rotate(Node* x){
-    Node* y = x->right;
-    x->right = y->left;
-    if (y->left != NIL)
-        y->left->parent = x;
-    y->parent = x->parent;
-    if (x->parent == NIL)
-        root = y;
-    else if (x == x->parent->left)
-        x->parent->left = y;
+void red_black_tree::left_rotate(Node* node){
+    Node* temp = node->right;
+    node->right = temp->left;
+    if (temp->left != NIL)
+        temp->left->parent = node;
+    temp->parent = node->parent;
+    if (node->parent == NIL)
+        root = temp;
+    else if (node == node->parent->left)
+        node->parent->left = temp;
     else
-        x->parent->right = y;
-    y->left = x;
-    x->parent = y;
+        node->parent->right = temp;
+    temp->left = node;
+    node->parent = temp;
 }
 
-void red_black_tree::right_rotate( Node* y){
-    Node* x = y->left;
-    y->left = x->right;
-    if (x->right != NIL)
-        x->right->parent = y;
-    x->parent = y->parent;
-    if (y->parent == NIL)
-        root = x;
-    else if (y == y->parent->right)
-        y->parent->right = x;
+void red_black_tree::right_rotate( Node* node){
+    Node* temp = node->left;
+    node->left = temp->right;
+    if (temp->right != NIL)
+        temp->right->parent = node;
+    temp->parent = node->parent;
+    if (node->parent == NIL)
+        root = temp;
+    else if (node == node->parent->right)
+        node->parent->right = temp;
     else
-        y->parent->left = x;
-    x->right = y;
-    y->parent = x;
+        node->parent->left = temp;
+    temp->right = node;
+    node->parent = temp;
 }
 
-void red_black_tree::rb_insert_fixup(Node* z){
-    while (z->parent->colour == 'R') {
-        if (z->parent == z->parent->parent->left) {
-            Node* y = z->parent->parent->right;
-            if (y->colour == 'R') {
-                z->parent->colour = 'B';
-                y->colour = 'B';
-                z->parent->parent->colour = 'R';
-                z = z->parent->parent;
+void red_black_tree::rb_insert_fixup(Node* node){
+    while (node->parent->colour == 'R') {
+        if (node->parent == node->parent->parent->left) {
+            Node* uncle = node->parent->parent->right;
+            if (uncle->colour == 'R') {
+                node->parent->colour = 'B';
+                uncle->colour = 'B';
+                node->parent->parent->colour = 'R';
+                node = node->parent->parent;
             } else {
-                if (z == z->parent->right) {
-                    z = z->parent;
-                    left_rotate(z);
+                if (node == node->parent->right) {
+                    node = node->parent;
+                    left_rotate(node);
                 }
-                z->parent->colour = 'B';
-                z->parent->parent->colour = 'R';
-                right_rotate(z->parent->parent);
+                node->parent->colour = 'B';
+                node->parent->parent->colour = 'R';
+                right_rotate(node->parent->parent);
             }
         } else {
-            Node* y = z->parent->parent->left;
-            if (y->colour == 'R') {
-                z->parent->colour = 'B';
-                y->colour = 'B';
-                z->parent->parent->colour = 'R';
-                z = z->parent->parent;
+            Node* uncle = node->parent->parent->left;
+            if (uncle->colour == 'R') {
+                node->parent->colour = 'B';
+                uncle->colour = 'B';
+                node->parent->parent->colour = 'R';
+                node = node->parent->parent;
             } else {
-                if (z == z->parent->left) {
-                    z = z->parent;
-                    right_rotate(z);
+                if (node == node->parent->left) {
+                    node = node->parent;
+                    right_rotate(node);
                 }
-                z->parent->colour = 'B';
-                z->parent->parent->colour = 'R';
-                left_rotate(z->parent->parent);
+                node->parent->colour = 'B';
+                node->parent->parent->colour = 'R';
+                left_rotate(node->parent->parent);
             }
         }
     }
     root->colour = 'B';
 }
 
-void red_black_tree::rb_insert(Node* z){
-    Node* y = NIL;
-    Node* x = root;
-    while (x != NIL) {
-        y = x;
-        if (z->data < x->data)
-            x = x->left;
+void red_black_tree::rb_insert(Node* new_node){
+    Node* parent = NIL;
+    Node* temp = root;
+    while (temp != NIL) {
+        parent = temp;
+        if (new_node->data < temp->data)
+            temp = temp->left;
         else
-            x = x->right;
+            temp = temp->right;
     }
-    z->parent = y;
-    if (y == NIL)
-        root = z;
-    else if (z->data < y->data)
-        y->left = z;
+    new_node->parent = parent;
+    if (parent == NIL)
+        root = new_node;
+    else if (new_node->data < parent->data)
+        parent->left = new_node;
     else
-        y->right = z;
-    z->left = NIL;
-    z->right = NIL;
-    z->colour = 'R';
-    rb_insert_fixup(z);
+        parent->right = new_node;
+    new_node->left = NIL;
+    new_node->right = NIL;
+    new_node->colour = 'R';
+    rb_insert_fixup(new_node);
 }
+
 void red_black_tree::rb_transplant( Node* u, Node* v) {
     if (u->parent == NIL)
         root = v;
@@ -115,91 +116,93 @@ red_black_tree::Node* red_black_tree::tree_minimum(Node* node) {
     return node;
 }
 
-void red_black_tree::rb_delete_fixup(Node* x) {
-    while (x != root && x->colour == 'B') {
-        if (x == x->parent->left) {
-            Node* w = x->parent->right;
-            if (w->colour == 'R') {
-                w->colour = 'B';
-                x->parent->colour = 'R';
-                left_rotate(x->parent);
-                w = x->parent->right;
+void red_black_tree::rb_delete_fixup(Node* node) {
+    while (node != root && node->colour == 'B') {
+        if (node == node->parent->left) {
+            Node* sibling = node->parent->right;
+            if (sibling->colour == 'R') {
+                sibling->colour = 'B';
+                node->parent->colour = 'R';
+                left_rotate(node->parent);
+                sibling = node->parent->right;
             }
-            if (w->left->colour == 'B' && w->right->colour == 'B') {
-                w->colour = 'R';
-                x = x->parent;
+            if (sibling->left->colour == 'B' && sibling->right->colour == 'B') {
+                sibling->colour = 'R';
+                node = node->parent;
             } else {
-                if (w->right->colour == 'B') {
-                    w->left->colour = 'B';
-                    w->colour = 'R';
-                    right_rotate(w);
-                    w = x->parent->right;
+                if (sibling->right->colour == 'B') {
+                    sibling->left->colour = 'B';
+                    sibling->colour = 'R';
+                    right_rotate(sibling);
+                    sibling = node->parent->right;
                 }
-                w->colour = x->parent->colour;
-                x->parent->colour = 'B';
-                w->right->colour = 'B';
-                left_rotate(x->parent);
-                x = root;
+                sibling->colour = node->parent->colour;
+                node->parent->colour = 'B';
+                sibling->right->colour = 'B';
+                left_rotate(node->parent);
+                node = root;
             }
         } else {
-            Node* w = x->parent->left;
-            if (w->colour == 'R') {
-                w->colour = 'B';
-                x->parent->colour = 'R';
-                right_rotate(x->parent);
-                w = x->parent->left;
+            Node* sibling = node->parent->left;
+            if (sibling->colour == 'R') {
+                sibling->colour = 'B';
+                node->parent->colour = 'R';
+                right_rotate(node->parent);
+                sibling = node->parent->left;
             }
-            if (w->right->colour == 'B' && w->left->colour == 'B') {
-                w->colour = 'R';
-                x = x->parent;
+            if (sibling->right->colour == 'B' && sibling->left->colour == 'B') {
+                sibling->colour = 'R';
+                node = node->parent;
             } else {
-                if (w->left->colour == 'B') {
-                    w->right->colour = 'B';
-                    w->colour = 'R';
-                    left_rotate(w);
-                    w = x->parent->left;
+                if (sibling->left->colour == 'B') {
+                    sibling->right->colour = 'B';
+                    sibling->colour = 'R';
+                    left_rotate(sibling);
+                    sibling = node->parent->left;
                 }
-                w->colour = x->parent->colour;
-                x->parent->colour = 'B';
-                w->left->colour = 'B';
-                right_rotate(x->parent);
-                x = root;
+                sibling->colour = node->parent->colour;
+                node->parent->colour = 'B';
+                sibling->left->colour = 'B';
+                right_rotate(node->parent);
+                node = root;
             }
         }
     }
-    x->colour = 'B';
+    node->colour = 'B';
 }
-void red_black_tree::rb_delete( Node* z) {
-    Node* y = z;
-    Node* x;
-    char y_original_colour = y->colour;
 
-    if (z->left == NIL) {
-        x = z->right;
-        rb_transplant( z, z->right);
-    } else if (z->right == NIL) {
-        x = z->left;
-        rb_transplant( z, z->left);
+void red_black_tree::rb_delete( Node* node) {
+    Node* succesor;
+    Node* temp;
+    char node_original_colour = node->colour;
+
+    if (node->left == NIL) {
+        temp = node->right;
+        rb_transplant(node, node->right);
+    } else if (node->right == NIL) {
+        temp = node->left;
+        rb_transplant(node, node->left);
     } else {
-        y = tree_minimum(z->right);
-        y_original_colour = y->colour;
-        x = y->right;
-        if (y->parent == z)
-            x->parent = y;
+        succesor = tree_minimum(node->right);
+        node_original_colour = succesor->colour;
+        temp = succesor->right;
+        if (succesor->parent == node)
+            temp->parent = succesor;
         else {
-            rb_transplant(y, y->right);
-            y->right = z->right;
-            y->right->parent = y;
+            rb_transplant(succesor, succesor->right);
+            succesor->right = node->right;
+            succesor->right->parent = succesor;
         }
-        rb_transplant(z, y);
-        y->left = z->left;
-        y->left->parent = y;
-        y->colour = z->colour;
+        rb_transplant(node, succesor);
+        succesor->left = node->left;
+        succesor->left->parent = succesor;
+        succesor->colour = node->colour;
     }
-    if (y_original_colour == 'B')
-        rb_delete_fixup(x);
-    delete z;
+    if (node_original_colour == 'B')
+        rb_delete_fixup(temp);
+    delete node;
 }
+
 red_black_tree::Node* red_black_tree::create_node(int data) {
     Node* new_node = new Node;
     new_node->data = data;
@@ -212,6 +215,7 @@ red_black_tree::Node* red_black_tree::create_node(int data) {
 red_black_tree::red_black_tree() = default;
 
 red_black_tree::red_black_tree(int size) {
+    if (size <= 0) return;
     Node* temp = new Node;
     for (int i = 0; i < size; ++i) {
         temp = create_node(rand());
@@ -229,8 +233,10 @@ void red_black_tree::print_tree(Node* node, int indent) {
 }
 
 void red_black_tree::show(){
+    if(root == NIL) return;
     print_tree(root);
 }
+
 red_black_tree::Node* red_black_tree::search(Node* node, int key) {
     Node* temp = node;
 
@@ -260,9 +266,6 @@ void red_black_tree::deleteNode(int key) {
 
 int *red_black_tree::select(int key) {
     Node* temp = search(root, key);
-    if (temp == NIL){
-        ;
-    }
     return &temp->data;
 }
 

@@ -9,8 +9,10 @@
 #include "cmath"
 
 max_heap::max_heap(int size) {
+    if (size<0) size = 0;
     heap_size = size;
     heap_max_size = size + size/2;
+    if (heap_max_size == 0) heap_max_size = 1;
     heap_array = new int[heap_max_size];
     srand((unsigned ) time(NULL));
     for (int i = 0; i < size; ++i) {
@@ -25,19 +27,20 @@ void max_heap::add(int item) {
     heap_array[heap_size] = item;
     heap_size++;
 
-//    if (heap_size == heap_max_size){
-//        heap_max_size = heap_max_size + heap_max_size/2;
-//        int* temp = new int[heap_max_size];
-//        for (int i = 0; i < heap_size; ++i) {
-//            temp[i] = heap_array[i];
-//        }
-//        delete [] heap_array;
-//        heap_array = temp;
-//    }
+    if (heap_size == heap_max_size){
+        heap_max_size = heap_max_size + heap_max_size/2;
+        int* temp = new int[heap_max_size];
+        for (int i = 0; i < heap_size; ++i) {
+            temp[i] = heap_array[i];
+        }
+        delete [] heap_array;
+        heap_array = temp;
+    }
     heap_fix_up();
 }
 
 void max_heap::delete_root() {
+    if (heap_size == 0) return;
     heap_array[0] = heap_array[heap_size-1];
     heap_array[heap_size-1] = 0;
     heap_size--;

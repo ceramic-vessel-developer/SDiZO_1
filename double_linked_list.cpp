@@ -111,6 +111,8 @@ void double_linked_list::delete_with_index(int index) {
     if (!last) return;
 
     dll_elem* temp = search(index);
+    if (!temp) return;
+
     if (temp->next and temp->previous){
             temp->previous->next = temp->next;
             temp->next->previous = temp->previous;
@@ -120,6 +122,9 @@ void double_linked_list::delete_with_index(int index) {
     }else if (temp->previous){
         last = temp->previous;
         temp->previous->next = nullptr;
+    }else{
+        last = nullptr;
+        first = nullptr;
     }
     delete temp;
 }
