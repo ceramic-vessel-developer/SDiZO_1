@@ -11,7 +11,7 @@ double_linked_list::double_linked_list(int size) {
     srand((unsigned) time(nullptr));
 
     for (int i = 0; i < size; ++i) {
-        add_back(rand()%1000);
+        add_back(rand());
     }
 }
 
@@ -78,8 +78,8 @@ void double_linked_list::add(int item, int index) {
     }
 }
 
-bool double_linked_list::delete_front() {
-    if(!first)return false;
+void double_linked_list::delete_front() {
+    if(first == nullptr)return;
 
     dll_elem* temp = first->next;
     delete first;
@@ -87,24 +87,26 @@ bool double_linked_list::delete_front() {
         temp->previous = nullptr;
     }
     first = temp;
-    return true;
 }
 
-bool double_linked_list::delete_back() {
-    if (!last) return false;
+void double_linked_list::delete_back() {
+    if (last == nullptr) return;
 
     dll_elem* temp = last->previous;
 
     delete last;
 
-    temp->next = nullptr;
-    last = temp;
+    if (temp == nullptr) {
+        last = nullptr;
+    } else {
+        temp->next = nullptr;
+        last = temp;
+    }
 
-    return true;
 }
 
-bool double_linked_list::delete_with_index(int index) {
-    if (!last) return false;
+void double_linked_list::delete_with_index(int index) {
+    if (!last) return;
 
     dll_elem* temp = search(index);
     if (temp->next and temp->previous){
@@ -118,8 +120,6 @@ bool double_linked_list::delete_with_index(int index) {
         temp->previous->next = nullptr;
     }
     delete temp;
-
-    return true;
 }
 
 int* double_linked_list::select(int value) {

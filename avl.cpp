@@ -115,13 +115,12 @@ void avl::add(int value) {
 
 avl::avl(int size) {
     for (int i = 0; i < size; ++i) {
-        add(i);
+        add(rand());
     }
 }
 
 avl::Node *avl::search(Node* node,int key) {
     if (node == nullptr){
-        std::cout <<"There is no such key in that tree!\n";
         return nullptr;
     }
     if (key < node->value){

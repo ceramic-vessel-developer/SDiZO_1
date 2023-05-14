@@ -83,7 +83,7 @@ void array_research(){
     //setup
     const int number_of_tests = 100;
     int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
-    int size;
+    int size, value, index;
     long double times [7] = {0,0,0,0,0,0,0};
     long double elapsed_time_double;
     LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
@@ -104,9 +104,9 @@ void array_research(){
         //add_back loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new dynamic_array(size);
-
+            value = rand();
             QueryPerformanceCounter(&start_time);
-            research_array->add_back(rand());
+            research_array->add_back(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -121,9 +121,10 @@ void array_research(){
         //add_front loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new dynamic_array(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->add_front(rand());
+            research_array->add_front(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -138,9 +139,11 @@ void array_research(){
         //add loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new dynamic_array(size);
+            value = rand();
+            index = rand()%size;
 
             QueryPerformanceCounter(&start_time);
-            research_array->add(rand(),rand()%size);
+            research_array->add(value,index);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -189,6 +192,7 @@ void array_research(){
         //delete_with_index loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new dynamic_array(size);
+            index = rand()%size;
 
             QueryPerformanceCounter(&start_time);
             research_array->delete_with_index(rand()%size);
@@ -208,6 +212,7 @@ void array_research(){
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new dynamic_array(size);
             value = rand();
+
             QueryPerformanceCounter(&start_time);
             research_array->select(value);
             QueryPerformanceCounter(&end_time);
@@ -234,7 +239,7 @@ void list_research(){
     //setup
     const int number_of_tests = 100;
     int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
-    int size;
+    int size, index, value;
     long double times [7] = {0,0,0,0,0,0,0};
     long double elapsed_time_double;
     LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
@@ -255,9 +260,9 @@ void list_research(){
         //add_back loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new double_linked_list(size);
-
+            value = rand();
             QueryPerformanceCounter(&start_time);
-            research_array->add_back(rand());
+            research_array->add_back(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -272,9 +277,10 @@ void list_research(){
         //add_front loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new double_linked_list(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->add_front(rand());
+            research_array->add_front(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -289,9 +295,11 @@ void list_research(){
         //add loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new double_linked_list(size);
+            value = rand();
+            index = rand()%size;
 
             QueryPerformanceCounter(&start_time);
-            research_array->add(rand(),rand()%size);
+            research_array->add(value,index);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -316,6 +324,9 @@ void list_research(){
             elapsed_time_double *= 1000000000; // result in nanoseconds
             elapsed_time_double /= frequency.QuadPart;
 
+            f.open("../txt_files/lisat.txt",std::ios::app);
+            f << size << ' ' << j << ' ' << elapsed_time_double << std::endl;
+            f.close();
             times[3] += elapsed_time_double;
         }
         times[3] /= number_of_tests;
@@ -340,9 +351,10 @@ void list_research(){
         //delete_with_index loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new double_linked_list(size);
+            index = rand()%size;
 
             QueryPerformanceCounter(&start_time);
-            research_array->delete_with_index(rand()%size);
+            research_array->delete_with_index(index);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -355,7 +367,6 @@ void list_research(){
         times[5] /= number_of_tests;
 
         //search loop
-        int value;
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new double_linked_list(size);
             value = rand();
@@ -386,6 +397,7 @@ void heap_research(){
     const int number_of_tests = 100;
     int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
     int size;
+    int value;
     long double times [3] = {0,0,0};
     long double elapsed_time_double;
     LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
@@ -406,9 +418,10 @@ void heap_research(){
         //add loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new max_heap(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->add(rand());
+            research_array->add(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -440,9 +453,10 @@ void heap_research(){
         //search loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new max_heap(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->search(rand());
+            research_array->search(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -467,7 +481,7 @@ void rb_tree_research(){
     //setup
     const int number_of_tests = 100;
     int sizes []= {100,200, 500, 700, 1000, 2000, 5000, 7000, 10000};
-    int size;
+    int size, value;
     long double times [3] = {0,0,0};
     long double elapsed_time_double;
     LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
@@ -488,9 +502,9 @@ void rb_tree_research(){
         //add loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new red_black_tree(size);
-
+            value = rand();
             QueryPerformanceCounter(&start_time);
-            research_array->add(rand());
+            research_array->add(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -505,9 +519,9 @@ void rb_tree_research(){
         //delete loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new red_black_tree(size);
-
+            value = rand();
             QueryPerformanceCounter(&start_time);
-            research_array->deleteNode(rand());
+            research_array->deleteNode(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -522,9 +536,10 @@ void rb_tree_research(){
         //search loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new red_black_tree(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->select(rand());
+            research_array->select(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -549,7 +564,7 @@ void avl_tree_research() {
     //setup
     const int number_of_tests = 100;
     int sizes[] = {100, 200, 500, 700, 1000, 2000, 5000, 7000, 10000};
-    int size;
+    int size, value;
     long double times[3] = {0, 0, 0};
     long double elapsed_time_double;
     LARGE_INTEGER start_time, end_time, elapsed_time, frequency;
@@ -570,9 +585,10 @@ void avl_tree_research() {
         //add loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new class avl(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->add(rand());
+            research_array->add(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -587,9 +603,10 @@ void avl_tree_research() {
         //delete loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new class avl(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->remove(rand());
+            research_array->remove(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -604,9 +621,10 @@ void avl_tree_research() {
         //search loop
         for (int j = 0; j < number_of_tests; ++j) {
             research_array = new class avl(size);
+            value = rand();
 
             QueryPerformanceCounter(&start_time);
-            research_array->select(rand());
+            research_array->select(value);
             QueryPerformanceCounter(&end_time);
 
             elapsed_time.QuadPart = end_time.QuadPart - start_time.QuadPart;
@@ -626,10 +644,10 @@ void avl_tree_research() {
     }
 }
 
-    void research(){
+void research(){
     array_research();
     list_research();
-    //heap_research();
+    heap_research();
     rb_tree_research();
     avl_tree_research();
 }

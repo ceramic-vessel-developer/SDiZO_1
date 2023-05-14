@@ -213,7 +213,7 @@ red_black_tree::red_black_tree() = default;
 red_black_tree::red_black_tree(int size) {
     Node* temp = new Node;
     for (int i = 0; i < size; ++i) {
-        temp = create_node(i);
+        temp = create_node(rand());
         rb_insert(temp);
     }
 }
@@ -231,13 +231,18 @@ void red_black_tree::show(){
     print_tree(root);
 }
 red_black_tree::Node* red_black_tree::search(Node* node, int key) {
-    if (node == NIL || node->data == key)
-        return node;
+    Node* temp = node;
 
-    if (key < node->data)
-        return search(node->left, key);
-    else
-        return search(node->right, key);
+    while (temp != NIL){
+        if (temp->data > key){
+            temp = temp->left;
+        }else if (temp->data < key){
+            temp = temp->right;
+        }else{
+            return temp;
+        }
+    }
+    return temp;
 }
 
 void red_black_tree::add(int key) {
@@ -250,14 +255,14 @@ void red_black_tree::deleteNode(int key) {
     if (temp != NIL){
         rb_delete(temp);
     } else{
-        std::cout << "There is no such node in that tree!" << std::endl;
+     ;
     }
 }
 
 int *red_black_tree::select(int key) {
     Node* temp = search(root, key);
     if (temp == NIL){
-        std::cout << "There is no such key!" << std::endl;
+        ;
     }
     return &temp->data;
 }

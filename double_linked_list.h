@@ -24,9 +24,9 @@ public:
     void add_back(int item);
     void add(int item, int index);
 
-    bool delete_front();
-    bool delete_back();
-    bool delete_with_index(int index);
+    void delete_front();
+    void delete_back();
+    void delete_with_index(int index);
 
     int* select(int value);
 

@@ -9,12 +9,11 @@
 max_heap::max_heap(int size) {
     heap_size = size;
     heap_max_size = size + size/2;
-    heap_array = new int(heap_max_size);
+    heap_array = new int[heap_max_size];
     srand((unsigned ) time(NULL));
     for (int i = 0; i < size; ++i) {
-        heap_array[i] = rand()%100;
+        heap_array[i] = rand()%99999;
     }
-    show();
     for (int i = (size-2)/2; i >=0 ; --i) {
         heap_fix_down(i);
     }
@@ -24,15 +23,15 @@ void max_heap::add(int item) {
     heap_array[heap_size] = item;
     heap_size++;
 
-    if (heap_size == heap_max_size){
-        heap_max_size = heap_max_size + heap_max_size/2;
-        int* temp = new int(heap_max_size);
-        for (int i = 0; i < heap_size; ++i) {
-            temp[i] = heap_array[i];
-        }
-        delete [] heap_array;
-        heap_array = temp;
-    }
+//    if (heap_size == heap_max_size){
+//        heap_max_size = heap_max_size + heap_max_size/2;
+//        int* temp = new int[heap_max_size];
+//        for (int i = 0; i < heap_size; ++i) {
+//            temp[i] = heap_array[i];
+//        }
+//        delete [] heap_array;
+//        heap_array = temp;
+//    }
     heap_fix_up();
 }
 
@@ -55,7 +54,7 @@ void max_heap::heap_fix_up() {
             heap_array[index/2] = item;
             index = index/2;
         } else{
-            break;
+            return;
         }
     }
 }
@@ -114,7 +113,7 @@ void max_heap::show() {
 
 int* max_heap::search(int item) {
     for (int i = 0; i <heap_size ; ++i) {
-        if (heap_array[i] = item){
+        if (heap_array[i] == item){
             return &heap_array[i];
         }
     }
