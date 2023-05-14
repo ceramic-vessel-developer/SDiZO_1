@@ -33,6 +33,7 @@ public:
     int* search(int item);
 
 
+    void print_heap( int i, int indent);
 };
 
 

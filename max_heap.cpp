@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "max_heap.h"
 #include "cmath"
 
@@ -90,26 +91,16 @@ int max_heap::heap_fix_down_floyd(int counter) {
 }
 
 void max_heap::show() {
-    int pos = 0, e = 0;
-    for( int i=0; i<heap_size; i++ ) { // n = arr length
+    print_heap(0,0);
+}
 
-        if( heap_array[i] == -1 )
-            std::cout << ' ';
-        else
-            std::cout << heap_array[i] << ' ';
-
-
-        if( pos == 0 ) {
-            pos = pow(2, e); // returns 2^e
-            e++;
-        }
-
-        if( pos == 1 )
-            std::cout << std::endl;
-        pos--;
+void max_heap::print_heap(int i, int indent) {
+    if (i < heap_size) {
+        print_heap(2*i+2, indent + 4);
+        std::cout << std::setw(indent) << " ";
+        std::cout << heap_array[i] << std::endl;
+        print_heap(2*i+1, indent + 4);
     }
-    std::cout << std::endl;
-    std::cout << std::endl;
 }
 
 int* max_heap::search(int item) {

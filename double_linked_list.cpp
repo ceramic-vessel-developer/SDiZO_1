@@ -23,6 +23,7 @@ void double_linked_list::add_front(int item) {
     node->previous = nullptr;
     node->next = first;
 
+    //if there ia no nodes, set new one as first and last
     if (first){
         first->previous = node;
     }else{
@@ -38,6 +39,7 @@ void double_linked_list::add_back(int item) {
     node->previous = last;
     node->next = nullptr;
 
+    //if there ia no nodes, set new one as first and last
     if (last){
         last->next = node;
     }else{
@@ -65,7 +67,6 @@ void double_linked_list::add(int item, int index) {
         current_node->previous->next = node;
 
         current_node->previous = node;
-
 
     }else if (index == 0){
         node->previous = nullptr;

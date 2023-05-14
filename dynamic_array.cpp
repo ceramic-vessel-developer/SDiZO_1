@@ -13,6 +13,7 @@
 void dynamic_array::add_front(int item) {
     int* temp = new int[size+1];
     temp[0] = item;
+    //copying values to the new array
     for (int i = 0; i < size; ++i) {
         temp[i+1] = array[i];
     }
@@ -23,17 +24,23 @@ void dynamic_array::add_front(int item) {
 
 void dynamic_array::add_back(int item) {
     int* temp = new int[size+1];
+    //copying values to the new array
     temp[size] = item;
     for (int i = 0; i < size; ++i) {
         temp[i] = array[i];
     }
+
     delete[] array;
     array = temp;
     size++;
 }
 
 void dynamic_array::add(int item, int index) {
+    if (index > size+1) return;
+
     int* temp = new int[size+1];
+
+    //copying values to the new array
     for (int i = 0; i < index; ++i) {
         temp[i] = array[i];
     }
@@ -41,6 +48,7 @@ void dynamic_array::add(int item, int index) {
     for (int i = index; i <size ; ++i) {
         temp[i+1] = array[i];
     }
+
     delete[] array;
     array = temp;
     size++;
@@ -51,6 +59,7 @@ void dynamic_array::delete_with_index(int index) {
         return;
     }
     int* temp = new int[size-1];
+    //copying values without deleted one to the new array
     for (int i = 0; i <index ; ++i) {
         temp[i] = array[i];
     }
@@ -65,9 +74,12 @@ void dynamic_array::delete_with_index(int index) {
 void dynamic_array::delete_back() {
     if (size == 0) return;
     int* temp = new int[size-1];
+
+    //copying values without deleted one to the new array
     for (int i = 0; i <size-1 ; ++i) {
         temp[i] = array[i];
     }
+
     delete[] array;
     array = temp;
     size--;
@@ -76,9 +88,12 @@ void dynamic_array::delete_back() {
 void dynamic_array::delete_front() {
     if (size == 0) return;
     int* temp = new int[size-1];
+
+    //copying values without deleted one to the new array
     for (int i = 0; i <size-1 ; ++i) {
         temp[i] = array[i+1];
     }
+
     delete[] array;
     array = temp;
     size--;
