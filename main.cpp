@@ -50,7 +50,7 @@ int main() {
 void test(){
     int choice;
     while (true){
-        std::cout << "Wybierz strukture ktora chcesz przetestowac\n1)Dynamiczna tablica\n2)lista dwukierunkowa\n3)Kopiec\n4)Drzewo czerwono-czarne\n5)Powrot" << std::endl;
+        std::cout << "Wybierz strukture ktora chcesz przetestowac\n1)Dynamiczna tablica\n2)lista dwukierunkowa\n3)Kopiec\n4)Drzewo czerwono-czarne\n5)Wyjscie" << std::endl;
         std::cin >> choice;
 
         switch (choice) {
